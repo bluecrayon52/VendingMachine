@@ -11,13 +11,14 @@ public class Dispenser{
         numItems = 0; 
     }
     
+    @Override
     public String toString(){
         
-    return   "1-"+items[0]+"\n"
-            +"2-"+items[1]+"\n"
-            +"3-"+items[2]+"\n"
-            +"4-"+items[3]+"\n"
-            +"5-"+items[4];
+    return   "1-"+items[0].getName()+"\n"
+            +"2-"+items[1].getName()+"\n"
+            +"3-"+items[2].getName()+"\n"
+            +"4-"+items[3].getName()+"\n"
+            +"5-"+items[4].getName();
     }
     
     public boolean option(char choice){
@@ -44,7 +45,7 @@ public class Dispenser{
         System.out.print("How many of this item would you "
                 + "like to add? ");
         int j =kb.nextInt();
-        items[i-1].setQty(j);
+        items[i-1].setQty(items[i-1].getQty()+j);
         System.out.println("The quantity of "+items[i-1].getName()+
                 " has been increased to "+items[i-1].getQty());
         
@@ -74,20 +75,27 @@ public class Dispenser{
     }
     
     public void setUpDispenser(){
-        for(int i =0; i < 5; i++){
-            if(items[i].getQty() == 0){
-                
+        
+        for(int i = 0; i < 5; i++){
+            
+            if(items[i]==null||items[i].getPrice()== 0){
+           
+               int c = i+1; 
+               System.out.println("Set up for space "+c+":"); 
                 System.out.print("Enter product name: ");
                 String name = kb.nextLine(); 
-                items[i].setName(name);
+             
                 
                 System.out.print("Enter price per unit: ");
                 double price = kb.nextDouble(); 
-                items[i].setPrice(price);
+             
                 
                 System.out.print("Enter quantity of stock inventory: ");
                 int quantity = kb.nextInt(); 
-                items[i].setQty(quantity);
+              
+                items[i] = new Product(name, price, quantity); 
+                
+                kb.nextLine(); 
                 
                 numItems++; 
             }
@@ -99,8 +107,10 @@ public class Dispenser{
         System.out.println(toString());
         System.out.print("Select a product to remove: ");
         int i = kb.nextInt(); 
-        items[i-1].setName(null);
-        items[i-1].setPrice(0);
-        items[i-1].setQty(0); 
+        if(option((char)i)){ 
+        items[i-1]= new Product();  
+            System.out.println("The product in space "+i+" has been removed.");
+        numItems--; 
+        }
     }
 }

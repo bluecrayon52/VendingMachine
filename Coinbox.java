@@ -1,8 +1,9 @@
 package vendingmachine; 
+import java.util.Scanner; 
 
 public class Coinbox{ 
     private int numQ, numD, numN, amount; 
-    
+    Scanner kb = new Scanner(System.in); 
     /*
     Initialize number of each coin, set amount to 0
     */
@@ -45,8 +46,9 @@ public class Coinbox{
     }
     
     public void displayCoins(){
-        System.out.print("Enter Change "
+        System.out.print("Enter a Coin\n"
                 + "((Q)uarter, (D)ime, (N)ickel, (R)efund): ");
+        
     }
     
     public int getAmount(){
