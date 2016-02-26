@@ -9,43 +9,82 @@ public class Dispenser{
     public Dispenser(){
         items = new Product[5]; 
         numItems = 0; 
+        
+        for(int i = 0; i < 5; i++){
+            items[i] = new Product(); 
+        }
     }
     
     @Override
     public String toString(){
         
-    return   "1-"+items[0].getName()+"\n"
-            +"2-"+items[1].getName()+"\n"
-            +"3-"+items[2].getName()+"\n"
-            +"4-"+items[3].getName()+"\n"
-            +"5-"+items[4].getName();
+    return   "1-"+items[0].toString()+"\n"
+            +"2-"+items[1].toString()+"\n"
+            +"3-"+items[2].toString()+"\n"
+            +"4-"+items[3].toString()+"\n"
+            +"5-"+items[4].toString();
     }
     
     public boolean option(char choice){
-        int ch = (int)choice; 
+        int ch = (int)choice - 48; 
         return ch >= 1 && ch <= numItems; 
     }
     
-    public  void changePrice(){ 
+    public void changePrice(){ 
         System.out.println(toString()+"\n");
-        System.out.print("Which item's price would you like"
-                + "to change? ");
-        int i = kb.nextInt(); 
+        char choice; 
+        int i;
+        
+            do{
+                System.out.print("Which item's price would you like"
+                 + "to change? ");
+        
+                i = kb.nextInt(); 
+        
+                int a = i + 48; 
+        
+                choice = (char)a; 
+        
+                if(!option(choice)){
+                    System.out.println("Invalid Input");
+                }
+        }while(!option(choice)); 
+        
         System.out.print("enter the new price: ");
         double j = kb.nextDouble(); 
         items[i-1].setPrice(j);  
+        
         System.out.println("The price of "+items[i-1].getName()
         +" has been changed to "+items[i-1].getPrice());
     }
     
     public void restockProduct(){
         System.out.println(toString());
+        char choice; 
+        int i; 
+        
+        do{ 
         System.out.print("Select an item to restock: ");
-        int i = kb.nextInt(); 
+        
+                i = kb.nextInt(); 
+        
+                int a = i + 48; 
+        
+                choice = (char)a; 
+        
+                if(!option(choice)){
+                    System.out.println("Invalid Input");
+                }
+                
+        }while(!option(choice)); 
+        
         System.out.print("How many of this item would you "
                 + "like to add? ");
+        
         int j =kb.nextInt();
+        
         items[i-1].setQty(items[i-1].getQty()+j);
+        
         System.out.println("The quantity of "+items[i-1].getName()+
                 " has been increased to "+items[i-1].getQty());
         
@@ -66,9 +105,9 @@ public class Dispenser{
     
     public int dispense(char choice){
     if(option(choice)){
-        if(items[(int)choice - 1].getQty()>0){
-            items[(int)choice - 1].setQty(items[(int)choice - 1].getQty() - 1);
-            return 1; 
+        if(inStock(choice)){
+         items[(int)choice - 49].setQty(items[(int)choice - 49].getQty() - 1);
+          return 1; 
          } 
     }
      return 0; 
@@ -78,7 +117,7 @@ public class Dispenser{
         
         for(int i = 0; i < 5; i++){
             
-            if(items[i]==null||items[i].getPrice()== 0){
+            if(items[i].getPrice()== 0){
            
                int c = i+1; 
                System.out.println("Set up for space "+c+":"); 

@@ -41,7 +41,19 @@ public class Coinbox{
       }
         amount = 0; 
         
-        System.out.printf("%d quarters, %d dimes, and %d nickels",Q,D,N);
+        System.out.print("Your Change is ");
+        
+             if(Q > 0){
+                System.out.printf("%d quarters ",Q);
+                }
+             
+             if(D > 0){        
+                System.out.printf("%d dimes ",D);
+                }
+             
+             if(N > 0){
+                System.out.printf("and %d nickels",N);
+                }
         
     }
     
