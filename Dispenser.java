@@ -52,9 +52,18 @@ public class Dispenser{
     and allow BOSS to change price of any item in the dispenser
     */
     public void changePrice(){ 
+        // exit this method if there are no products 
+        if(numItems == 0){
+            System.out.println("\nThere are no products "
+                    + "to change the price of.");
+            System.out.println("\nBack to the Boss menu!");
+            return; 
+        }
+        
         System.out.println("\n"+toString()); 
         char ch; // used to ivaluate string choice 
         int changeMore = 1; // controls outer do while loop 
+      
         
         do{ // while changeMore == 1, or as long as user doesn't enter B. 
             do{ // while unput is out of bounds 
@@ -65,7 +74,7 @@ public class Dispenser{
                
                // exit this method and return to bossWork 
                if(choice.equalsIgnoreCase("b")){ 
-                   System.out.println("\nBack to Boss Menu!");
+                   System.out.println("\nBack to Boss menu!");
                    return; 
                }
                 ch = choice.charAt(0); 
@@ -82,26 +91,30 @@ public class Dispenser{
         do{
         System.out.print("\nenter the new price (or B for Boss menu): ");
         
-        //exit this method and return to bossWork
-        if(kb.nextLine().equalsIgnoreCase("b")){
-            System.out.println("\nBack to the Boss menu!");
-            return; 
-        }
+        
             try{
+            // set new price 
             newPrice = kb.nextDouble(); 
-            valid = 0; 
+            items[i-1].setPrice(newPrice); 
+            kb.nextLine(); // clear scanner buffer 
+            valid = 0; // turn off do while loop 
             }
         
             catch(InputMismatchException e){
+                
+                //exit this method and return to bossWork
+            if(kb.nextLine().equalsIgnoreCase("b")){
+                System.out.println("\nBack to the Boss menu!");
+                return; 
+                }
+            //turn on do while loop 
             System.out.println("\nInvalid input!");  
             valid = 1; 
             }
             
         }while(valid == 1); 
         
-        items[i-1].setPrice(newPrice); // set new price  
-        
-        System.out.println("The price of "+items[i-1].getName()
+        System.out.println("\nThe price of "+items[i-1].getName()
         +" has been changed to "+items[i-1].getPrice());
         
     }while(changeMore  == 1);// always true 
@@ -112,12 +125,20 @@ public class Dispenser{
     to any product in the dispenser
     */
     public void restockProduct(){
+        
+        // exit this method if there are no products 
+        if(numItems == 0){
+            System.out.println("\nThere are no products to restock.");
+            System.out.println("\nBack to the Boss menu!");
+            return; 
+        }
         System.out.println("\n"+toString());
         char ch; // used to ivaluate string choice 
         int restockMore = 1; // controls outer do while loop 
+        
         do{ // while restockMore ==1, or as long as user does't enter B 
             do{ // while unput is out of bounds 
-                System.out.print("Select an item to restock"
+                System.out.print("\nSelect an item to restock"
                         + "(or enter B to go back to the Boss menu): ");
         
                 String choice = kb.nextLine(); 
@@ -131,7 +152,7 @@ public class Dispenser{
                     ch = choice.charAt(0); 
         
                     if(!option(ch)){ // check valid bounds of input 
-                    System.out.println("Invalid Input");
+                    System.out.println("\n\nInvalid Input");
                     }
                 
                 }while(!option(ch)); 
@@ -141,34 +162,38 @@ public class Dispenser{
         int valid; // controls mismatch do while loop 
         
         do{
-            System.out.print("Enter the number of item would you "
+            System.out.print("\nEnter the number of item would you "
                 + "like to add (or B for the Boss menu): ");
         
-            // exit this method and return to bossWork
-            if(kb.nextLine().equalsIgnoreCase("b")){
-            System.out.println("\nBack to the Boss menu!");
-            return; 
-            }
-        
             try{
+            // set new quantity 
             newStock =kb.nextInt();
-             valid = 0; 
+            items[i-1].setQty(items[i-1].getQty()+newStock);
+            kb.nextLine(); // clear scanner buffer 
+             valid = 0; // turn off do while loop 
             }
         
             catch(InputMismatchException e){
-            System.out.println("\nInvalid input!");
-            valid = 1; 
-            }
+                
+                 // exit this method and return to bossWork
+                 if(kb.nextLine().equalsIgnoreCase("b")){
+                    System.out.println("\nBack to the Boss menu!");
+                    return; 
+                    }   
+                 // turn on do while loop 
+                 System.out.println("\nInvalid input!");
+                 valid = 1; 
+                 }
         
         }while(valid == 1); 
         
-        items[i-1].setQty(items[i-1].getQty()+newStock); // set new quantity 
-        
-        System.out.println("The quantity of "+items[i-1].getName()+
+            System.out.println("\n"+toString());
+            System.out.println("\nThe quantity of "+items[i-1].getName()+
                 " has been increased to "+items[i-1].getQty());
         
     }while(restockMore ==1);// always true    
     }
+    
     /*
     Return the price of the selected product.  
     If choice is not valid, return -1.
@@ -248,7 +273,8 @@ public class Dispenser{
             // if a space is empty but labeled for a product 
           if( items[i].getQty() == 0 && !items[i].getName().matches("")){
                 int valid; // controls input validity loop 
-            
+                kb.nextLine(); // clear scanner buffer 
+                
                 do{
                    
                 valid = 0; 
@@ -274,7 +300,9 @@ public class Dispenser{
                     System.out.println("\nBack to the Boss Menu!");
                     return; 
                 }
+                // turn on do while loop 
                 else{
+                    System.out.println("\nInvalid input!");
                     valid = 1; 
                 }
                 
@@ -291,37 +319,45 @@ public class Dispenser{
                System.out.print("\nEnter product name "
                               + "(or B to go Back to the Boss menu): ");
                
-                String name = kb.nextLine(); 
-                
+               String name = kb.nextLine();
+               
                 // exit this method and return to bossWork 
                 if(name.equalsIgnoreCase("b")){
                     System.out.println("\nBack to Boss menu!");
                     return; 
                 }
+               
+               // set the name of the product
+                items[i].setName(name); 
+                numItems++; // increment items
+                
                 
                 double price = 0; 
-               int valid = 0; // controls input mismatch loop 
+               int valid; // controls input mismatch loop 
                 
             do{// while valid == 1 
                 System.out.print("\nEnter price per unit"
                         + " (or B for the Boss menu): ");
                 
-                //exit this method and return to bossWork 
-               if(kb.nextLine().equalsIgnoreCase("b")){
-                   System.out.println("\nBack to the Boss menu!");
-                   return;
-               }
-                
                 try{
+                 // set the price of the product   
                  price = kb.nextDouble();
+                 items[i].setPrice(price); 
                  valid = 0;
-                kb.nextLine(); 
+                 kb.nextLine(); 
                 }
                 
                 catch(InputMismatchException e){
-                  //  kb.nextLine(); 
+                 
+               //exit this method and return to bossWork 
+               if(kb.nextLine().equalsIgnoreCase("b")){
+                   System.out.println("\nBack to the Boss menu!");
+                   return;
+                   }
+                    // turn on do while loop 
                     System.out.println("\nInvalid input!");   
                     valid = 1; 
+                    
                 }
             }while(valid == 1);
             
@@ -331,39 +367,37 @@ public class Dispenser{
                 System.out.print("\nEnter quantity of stock inventory "
                         + "(or B for the Boss menu): ");
                 
-                //exit this method and return to bossWork 
-                if(kb.nextLine().equalsIgnoreCase("b")){
-                    System.out.println("\nBack to the Boss menu!");
-                    return; 
-                }
-                
                 try{
+                // set quantity of product     
                 quantity = kb.nextInt(); 
-                valid = 0; 
+                items[i].setQty(quantity);
                 kb.nextLine();  // clear scanner buffer 
                 }
                 
                 catch(InputMismatchException e){
-                 //   kb.nextLine();  // clear scanner buffer 
+                    
+                //exit this method and return to bossWork 
+                if(kb.nextLine().equalsIgnoreCase("b")){
+                    System.out.println("\nBack to the Boss menu!");
+                    return; 
+                    }
+                    // turn on do while loop 
                     System.out.println("\nInvalid input!");
                     valid = 1; 
                 }
             }while(valid == 1); 
             
-                items[i] = new Product(name, price, quantity); 
+                
                 System.out.println("\nSpace "+c+" is now set up with "
                         + items[i].getName()+".");
-              
                 
-                numItems++; // increment items  
-              
             }
         
         } // end of for loop, machine is full   
          
         System.out.println(toString());
         System.out.println("\nThe Vending Machine is now full."); 
-        System.out.println("\nBack to Boss menu!");
+        System.out.println("\nBack to the Boss menu!");
     }
     
     /*
@@ -419,6 +453,7 @@ public class Dispenser{
                     
                    // empty notification and short cercuit to bossWork 
                     if(numItems == 0){
+                        System.out.println("\n"+toString());
                         System.out.println("\nThe Vending Machine "
                                             + "is now empty");
                         
@@ -433,6 +468,7 @@ public class Dispenser{
                         
                         // empty last product space 
                         items[numItems]=new Product(); 
+                        System.out.println("\n"+toString()); 
                     } 
                           
                 }
