@@ -16,6 +16,12 @@ public class Coinbox{
     
     public void giveChange(int change){
       int Q = 0, D = 0, N = 0; 
+      
+      // exit method if no money was put in machine 
+      if(change == 0){
+          System.out.println("\nThere is no change to return.");
+          return; 
+      }
         while(change > 0){
             if(change >= 25 && numQ > 0){
                 Q++;
@@ -58,8 +64,7 @@ public class Coinbox{
     }
     
     public void displayCoins(){
-        System.out.print("Enter a Coin\n"
-                + "((Q)uarter, (D)ime, (N)ickel, (R)efund): ");
+        System.out.println("Coin Options: (Q)uarter, (D)ime, (N)ickel, (R)efund. ");
         
     }
     
@@ -67,13 +72,22 @@ public class Coinbox{
         return amount; 
     }
     
-    public boolean option(char choice){
-        if(choice == 'Q'||choice == 'D'|| choice =='N'){
+    public boolean option(char choice){ 
+        
+        // accept Upper lower case char 
+        Character c = choice; 
+         String d = c.toString();
+         String e = d.toLowerCase(); 
+         
+        // check if coin choice is valid 
+        if(e.equals("q")|| e.equals("d") || e.equals("n")){
+            
            takeCoin(choice); 
            displayAmount(); 
            return true; 
         }
-        else if( choice == 'R'){
+        // check for refund 
+        else if(e.equals("r")){
             giveChange(amount);
             return false; 
         }
@@ -83,18 +97,21 @@ public class Coinbox{
     }
     
     private void takeCoin(char coin){
-        switch(coin){
-            case 'Q':
+        Character c = coin; 
+         String d = c.toString();
+         String e = d.toLowerCase(); 
+        switch(e){
+            case "q":
                 numQ++;
                 amount+=25;
                 break;
                 
-            case 'D':
+            case "d":
                 numD++;
                 amount+=10;
                 break; 
                 
-            case'N':
+            case "n":
                 numN++;
                 amount+=5;
                 break; 

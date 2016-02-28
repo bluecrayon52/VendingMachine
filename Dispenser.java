@@ -221,13 +221,17 @@ public class Dispenser{
     If item is out of stock, or invalid, 0 is returned
     */
     public int dispense(char choice){
-    if(option(choice)){
+   // if(option(choice)){
         if(inStock(choice)){
          items[(int)choice - 49].setQty(items[(int)choice - 49].getQty() - 1);
+            System.out.println("\nOne "+items[(int)choice - 49].getName()
+                    +" has been despensed.");  
           return 1; 
          } 
-    }
-     return 0; 
+  //  }
+        System.out.println("\n"+items[(int)choice -49].getName()
+                +" is currently out of stock, please select another item.");
+      return 0; 
     }
     
     /*
@@ -312,7 +316,7 @@ public class Dispenser{
             if(items[i].getQty()== 0){
                
                // display products 
-               System.out.println(toString());
+               System.out.println("\n"+toString());
                
                 
                System.out.println("\nSet up for space "+c+":"); 
@@ -371,6 +375,8 @@ public class Dispenser{
                 // set quantity of product     
                 quantity = kb.nextInt(); 
                 items[i].setQty(quantity);
+                // turn loop off 
+                valid = 0; 
                 kb.nextLine();  // clear scanner buffer 
                 }
                 
