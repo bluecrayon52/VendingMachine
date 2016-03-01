@@ -1,3 +1,9 @@
+/*  
+ * Author: Nathaniel Clay Arnold
+ * Program 3 - VendingMachine
+ * CSC230-02 Spring 2016
+ */
+
 package vendingmachine; 
 import java.util.Scanner; 
 
@@ -13,12 +19,9 @@ public class VendingMachine{
     public VendingMachine(){
         snackMachine = new Dispenser(); 
         moneyBox = new Coinbox(5,5,5);
-        // evaluate for startup 
-            if(!bossWork()){
-                run(); 
-            } 
-        // shutdown 
-            else{
+        
+        // evaluate for shutdown 
+            if(bossWork()){
                 System.out.println("Vending Machine shutdown, Goodbye");
                 System.exit(0); 
             }
@@ -115,6 +118,7 @@ public class VendingMachine{
             
             case 2: 
               kb.nextLine();
+              run(); 
               break; 
             
             case 3:
@@ -167,7 +171,7 @@ public class VendingMachine{
             
         }
         
-    }while(i != 2 && i != 6);
+    }while(i != 6);
     
   return i == 6; 
 }   
