@@ -1,9 +1,16 @@
+/*  
+ * Author: Nathaniel Clay Arnold
+ * Program 3 - Coinbox 
+ * CSC230-02 Spring 2016
+ */
+
 package vendingmachine; 
 import java.util.Scanner; 
 
 public class Coinbox{ 
     private int numQ, numD, numN, amount; 
     Scanner kb = new Scanner(System.in); 
+    
     /*
     Initialize number of each coin, set amount to 0
     */
@@ -14,14 +21,21 @@ public class Coinbox{
         amount = 0; 
     }
     
+    /*
+    PRE: Change is > 0. Assume correct change is always available.
+    POST: change is distributed and coins in box are appropriately reduced.  
+    Amount is reset to 0.  Displays statement showing coin distribution.
+    */
     public void giveChange(int change){
       int Q = 0, D = 0, N = 0; 
       
-      // exit method if no money was put in machine 
+      // exit method if no money was put in machine or no change is needed  
       if(change == 0){
           System.out.println("\nThere is no change to return.");
           return; 
       }
+       
+       // give best possible change distribution 
         while(change > 0){
             if(change >= 25 && numQ > 0){
                 Q++;
@@ -45,8 +59,10 @@ public class Coinbox{
             }
             
       }
+        // clear amount for next transaction 
         amount = 0; 
         
+        // print out change distribution 
         System.out.print("Your Change is ");
         
              if(Q > 0){
@@ -63,15 +79,27 @@ public class Coinbox{
         
     }
     
+    /*
+    Display Coinbox menu
+    */
     public void displayCoins(){
-        System.out.println("Coin Options: (Q)uarter, (D)ime, (N)ickel, (R)efund. ");
+        System.out.println("Coin Options: (Q)uarter, "
+                + "(D)ime, (N)ickel, (R)efund. ");
         
     }
     
+    /*
+    Return amount deposited for current transaction
+    */
     public int getAmount(){
         return amount; 
     }
     
+    /*
+    Evaluates choice. If choice is a coin (Q, D, N), then takeCoin(), 
+    displayAmount(), and return true. If choice is (R), 
+    then giveChange()and return false. Any other choice, return false.
+    */
     public boolean option(char choice){ 
         
         // accept Upper lower case char 
@@ -79,27 +107,35 @@ public class Coinbox{
          String d = c.toString();
          String e = d.toLowerCase(); 
          
-        // check if coin choice is valid 
-        if(e.equals("q")|| e.equals("d") || e.equals("n")){
-            
-           takeCoin(choice); 
-           displayAmount(); 
-           return true; 
-        }
-        // check for refund 
-        else if(e.equals("r")){
-            giveChange(amount);
-            return false; 
+        // check if coin choice is valid
+        switch (e) {
+            case "q":
+            case "d":
+            case "n":
+                takeCoin(choice);
+                displayAmount();
+                return true;
+                
+            //refund 
+            case "r":
+                giveChange(amount);
+                return false; 
         }
         
       return false; 
                     
     }
     
+    /*
+    PRE: coin must be a (Q)uarter, (D)ime, or (N)ickel  
+    POST: increment appropriate coin in box and total amount for  transaction
+    */
     private void takeCoin(char coin){
         Character c = coin; 
          String d = c.toString();
          String e = d.toLowerCase(); 
+         
+       // Add coin value to amount 
         switch(e){
             case "q":
                 numQ++;
@@ -122,6 +158,9 @@ public class Coinbox{
         
     }
     
+    /*
+    Display total deposited for current transaction
+    */
     private void displayAmount(){
         System.out.print("Total Diposited: " + amount);
     }
