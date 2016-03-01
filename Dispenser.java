@@ -85,7 +85,7 @@ public class Dispenser{
         }while(!option(ch)); 
         
         int i = (int)ch -48; // convert char to an int 
-        double newPrice =0; 
+        double newPrice; 
         int valid; // controls mismatch do while loop 
         
         do{
@@ -158,7 +158,7 @@ public class Dispenser{
                 }while(!option(ch)); 
         
         int i = (int)ch -48; // convert char to an int 
-        int newStock = 0; 
+        int newStock; 
         int valid; // controls mismatch do while loop 
         
         do{
@@ -336,7 +336,7 @@ public class Dispenser{
                 numItems++; // increment items
                 
                 
-                double price = 0; 
+                double price; 
                int valid; // controls input mismatch loop 
                 
             do{// while valid == 1 
@@ -365,7 +365,7 @@ public class Dispenser{
                 }
             }while(valid == 1);
             
-            int quantity = 0; 
+            int quantity; 
              
             do{ // while valide == 1
                 System.out.print("\nEnter quantity of stock inventory "
@@ -480,6 +480,7 @@ public class Dispenser{
                 }
             }
             
+            // input not valid, loop back to selection print statemnt 
             else{
                 
                 System.out.println("\nInvalid Input!");
