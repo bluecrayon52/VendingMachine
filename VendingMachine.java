@@ -6,6 +6,7 @@
 
 package vendingmachine; 
 import java.util.Scanner; 
+import java.util.InputMismatchException; 
 
 public class VendingMachine{ 
     private Dispenser snackMachine; 
@@ -43,7 +44,13 @@ public class VendingMachine{
         
         System.out.println("\n"+snackMachine.toString());
         moneyBox.displayCoins();
+        
+      if(moneyBox.getAmount()== 0){
         System.out.print("\nEnter money first and then select a product: ");
+      }
+      else{
+          System.out.print("\nSelect a Product or enter more money: ");
+      }
         String s = kb.nextLine(); 
         char c = s.charAt(0); 
         serviceCustomer(c); 
@@ -58,28 +65,41 @@ public class VendingMachine{
       if(choice == 'B'|| choice == 'b'){
           
           // ivaluate bossWork for restart  
-           if(!bossWork()){
-                run(); 
-            } 
-           //shutdown 
-            else{
-                System.out.println("Vending Machine shutdown, Goodbye");
-                System.exit(0); 
+           if(bossWork()){
+               
+          // shutdown
+            System.out.println("Vending Machine shutdown, Goodbye");
+            System.exit(0); 
             }
            
       }
+      
+      if(choice == 'R'|| choice == 'r'){
+         
+         moneyBox.giveChange(moneyBox.getAmount());  
+                  showUserChoice();   
+      }
+      
       // check validity of coins 
        while(moneyBox.option(choice)){
          showUserChoice();  
          
        }
+       
        // check validity of product choice 
        if(snackMachine.option(choice)){
            
            // check that enough money has been entered 
-           if(moneyBox.getAmount() >= snackMachine.getPrice(choice)){
+           if(moneyBox.getAmount() >= snackMachine.getPrice(choice)*100){
                   
                   snackMachine.dispense(choice); 
+                  
+                  // calculate change 
+                  double calcprice = snackMachine.getPrice(choice)*100; 
+                  int change = moneyBox.getAmount() - (int)calcprice; 
+                  
+                  // give customer change 
+                  moneyBox.giveChange(change);  
                   showUserChoice();      
            }
            else{
@@ -87,20 +107,28 @@ public class VendingMachine{
                        + "money for that selection yet!");
                showUserChoice(); 
            }
-    }
+        } 
+       
        else{ 
            System.out.println("\nInvalid input!");
            showUserChoice(); 
        }
     }
     
+    /*
+    Give the boss menu, process boss choices 
+    while choice is not shutdown option.  
+    Return true for shutdown option and false for start machine option
+    */
     private boolean bossWork(){
         System.out.println("Welcome!");
         System.out.println("\nThis is the Boss menu for "
                             + "the Vending Machine:"); 
-        int i;  
+        int i = 0; 
         
+        outerloop: 
        do{
+        // show boss mnu 
         System.out.print("\n1-Set Up Dispenser\n"+
                            "2-Start Machine\n"+
                            "3-Restock Product\n"+
@@ -108,8 +136,18 @@ public class VendingMachine{
                            "5-Delete Product\n"+
                            "6-Shutdown\n"+
                            "\nMake a Selection(1-6): ");
+        
+        // catch non int types 
+        try{
         i = kb.nextInt();
-         
+        } 
+        catch(InputMismatchException e){
+            System.out.println("\nInvalid Input."); 
+            kb.nextLine(); 
+            continue; 
+        }
+        
+       // ivaluate boss choice   
         switch(i){
             case 1:
               kb.nextLine(); 
@@ -118,7 +156,7 @@ public class VendingMachine{
             
             case 2: 
               kb.nextLine();
-              run(); 
+              run(); // start up vending machine 
               break; 
             
             case 3:
@@ -142,6 +180,8 @@ public class VendingMachine{
                 kb.nextLine(); 
                 
                do{
+                   
+                // double check with boss before shutdown 
                 System.out.print("\nAre you shure you want to "
                         + "shutdown the Vending Machine?(Y,N):");
                 String choice = kb.nextLine(); 
@@ -151,20 +191,21 @@ public class VendingMachine{
                      }
                 
                      else if(choice.equalsIgnoreCase("n")){
-                        i = 0;
+                        i = 0; // reset boss choice to stay in loop 
+                        
                         input = 1; 
-                        System.out.println("Back to the Boss Menu!");
+                        System.out.println("\nBack to the Boss Menu!");
                      }
                      
                      else{ 
                         System.out.println("\nInvalid Input"); 
                      }
                      
-               }while(input ==0); 
+               }while(input == 0); 
                
                break;  
             
-            
+            // for int types not in bounds of choices 
             default:
                 System.out.println("\nInvalid Input");
                 break; 
