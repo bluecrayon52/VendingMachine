@@ -32,30 +32,32 @@ public class Coinbox{
       // exit method if no money was put in machine or no change is needed  
       if(change == 0){
           System.out.println("\nThere is no change to return.");
+          amount = 0; 
           return; 
       }
        
        // give best possible change distribution 
         while(change > 0){
+            
             if(change >= 25 && numQ > 0){
                 Q++;
                 numQ--; 
                 change -= 25;
-                break; 
+                continue; 
             }
             
             if(change >= 10 && numD > 0){
                 D++; 
                 numD--; 
                 change -= 10;
-                break;
+               continue; 
             }
             
             if(change >= 5 && numN > 0){
                 N++; 
                 numN--; 
                 change -= 5; 
-                break;     
+                   
             }
             
       }
@@ -63,20 +65,21 @@ public class Coinbox{
         amount = 0; 
         
         // print out change distribution 
-        System.out.print("Your Change is ");
+        System.out.print("\nYour Change is ");
         
              if(Q > 0){
-                System.out.printf("%d quarters ",Q);
+                System.out.printf("%d quarter(s) ",Q);
                 }
              
              if(D > 0){        
-                System.out.printf("%d dimes ",D);
+                System.out.printf("%d dime(s) ",D);
                 }
              
              if(N > 0){
-                System.out.printf("and %d nickels",N);
+                System.out.printf("%d nickel(s)",N);
                 }
-        
+             
+             System.out.println();
     }
     
     /*
@@ -119,8 +122,7 @@ public class Coinbox{
             //refund 
             case "r":
                 giveChange(amount);
-                return false; 
-        }
+          }
         
       return false; 
                     
@@ -162,6 +164,6 @@ public class Coinbox{
     Display total deposited for current transaction
     */
     private void displayAmount(){
-        System.out.print("Total Diposited: " + amount);
+        System.out.print("\nTotal Diposited: " + amount+"\n");
     }
 }
