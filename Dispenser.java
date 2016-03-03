@@ -62,7 +62,6 @@ public class Dispenser{
         
         System.out.println("\n"+toString()); 
         char ch; // used to ivaluate string choice 
-        int changeMore = 1; // controls outer do while loop 
       
         
         do{ // while changeMore == 1, or as long as user doesn't enter B. 
@@ -117,7 +116,7 @@ public class Dispenser{
         System.out.println("\nThe price of "+items[i-1].getName()
         +" has been changed to "+items[i-1].getPrice());
         
-    }while(changeMore  == 1);// always true 
+    }while(true);// always true 
     }
     
     /*
@@ -134,7 +133,6 @@ public class Dispenser{
         }
         System.out.println("\n"+toString());
         char ch; // used to ivaluate string choice 
-        int restockMore = 1; // controls outer do while loop 
         
         do{ // while restockMore ==1, or as long as user does't enter B 
             do{ // while unput is out of bounds 
@@ -191,7 +189,7 @@ public class Dispenser{
             System.out.println("\nThe quantity of "+items[i-1].getName()+
                 " has been increased to "+items[i-1].getQty());
         
-    }while(restockMore ==1);// always true    
+    }while(true);// always true    
     }
     
     /*
@@ -221,17 +219,22 @@ public class Dispenser{
     If item is out of stock, or invalid, 0 is returned
     */
     public int dispense(char choice){
-   // if(option(choice)){
+   if(option(choice)){
         if(inStock(choice)){
          items[(int)choice - 49].setQty(items[(int)choice - 49].getQty() - 1);
             System.out.println("\nOne "+items[(int)choice - 49].getName()
                     +" has been despensed.");  
           return 1; 
          } 
-  //  }
+        
+        else{ 
         System.out.println("\n"+items[(int)choice -49].getName()
                 +" is currently out of stock, please select another item.");
-      return 0; 
+        } 
+        
+     } 
+   
+   return 0; 
     }
     
     /*
@@ -277,30 +280,36 @@ public class Dispenser{
             // if a space is empty but labeled for a product 
           if( items[i].getQty() == 0 && !items[i].getName().matches("")){
                 int valid; // controls input validity loop 
-                kb.nextLine(); // clear scanner buffer 
+               
                 
                 do{
                    
                 valid = 0; 
+                
                 // notify user of label and give options
                 System.out.println("\nSpace "+c+" is empty but set up for "
                         +items[i].getName()+".");
+                
                 System.out.print("\nEnter Y to proceed with overwriting\n"
                         + "N to move to the next available space\n"
                         + "or B to go back to the Boss menu: ");
                 
+                String proceed = kb.nextLine();
+                
                 // allow overwriting 
-                if(kb.nextLine().equalsIgnoreCase("y")){
+                if(proceed.equalsIgnoreCase("y")){
                     System.out.println("\nProceeding!");
+                    items[i].setName("");  
                 }
+                
                 // break for loop and increment 
-                else if(kb.nextLine().equalsIgnoreCase("n")){
+                else if(proceed.equalsIgnoreCase("n")){
                     System.out.println("\nMoving on to the next "
                             + "available space!");
                     continue outerloop; // increment for loop to next space
                 }
                 // exit this method and return to bossWork
-                else if(kb.nextLine().equalsIgnoreCase("b")){
+                else if(proceed.equalsIgnoreCase("b")){
                     System.out.println("\nBack to the Boss Menu!");
                     return; 
                 }
@@ -312,7 +321,8 @@ public class Dispenser{
                 
             }while(valid == 1); 
                  
-          }    
+          }
+          
             if(items[i].getQty()== 0){
                
                // display products 
@@ -421,7 +431,6 @@ public class Dispenser{
             return; 
             }
         
-        int deleteMore =1;
         
         do{
              
@@ -473,7 +482,7 @@ public class Dispenser{
                         items[i-1] = items[numItems];    
                         
                         // empty last product space 
-                        items[numItems]=new Product(); 
+                        items[numItems] = new Product(); 
                         System.out.println("\n"+toString()); 
                     } 
                           
@@ -486,7 +495,7 @@ public class Dispenser{
                 System.out.println("\nInvalid Input!");
             }
             
-        }while(deleteMore == 1); //always true 
+        }while(true); //always true 
 
     }
 }
